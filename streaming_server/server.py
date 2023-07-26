@@ -1,7 +1,8 @@
 from flask import Flask, Response
 import threading
 
-from streaming_server.VideoCamera import VideoCamera
+from VideoCamera import VideoCamera
+
 
 app = Flask(__name__)
 
