@@ -10,7 +10,7 @@ now = datetime.datetime.now()
 # ファイル名に使用する日時文字列を作成
 filename = 'rec/' + now.strftime('%Y%m%d_%H%M%S') + '.mp4'
 # 動画保存の設定
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+fourcc = cv2.VideoWriter_fourcc(*'MP4V')
 fps = int(cap.get(cv2.CAP_PROP_FPS))                    # カメラのFPSを取得
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))              # カメラの横幅を取得
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
