@@ -3,6 +3,7 @@ import threading
 import cv2
 import logging
 import atexit
+import datetime
 
 app = Flask(__name__)
 
@@ -28,8 +29,15 @@ def record():
         if action == 'start':
             if not recording: # Start recording if not already recording
                 logging.debug('Starting recording.')  # Log recording start
-                fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Define the codec
-                recorder = cv2.VideoWriter('output.mp4', fourcc, 20.0, (640,480))  # Define VideoWriter
+                # 現在の日時を取得
+                now = datetime.datetime.now()
+                # ファイル名に使用する日時文字列を作成
+                filename = 'rec/' + now.strftime('%Y%m%d_%H%M%S') + '.mp4'
+                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+                fps = int(cap.get(cv2.CAP_PROP_FPS))                    # カメラのFPSを取得
+                width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))              # カメラの横幅を取得
+                height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                out = cv2.VideoWriter(filename, fourcc, fps, (width, height))
                 recording = True
         elif action == 'stop':
             if recording: # Stop recording if currently recording
