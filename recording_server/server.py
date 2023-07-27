@@ -25,18 +25,17 @@ def record():
     logging.debug(f'Received action: {action}')  # Log the received action
 
     if action == 'start':
-        if not recording: # Start recording if not already recording
-            logging.debug('Starting recording.')  # Log recording start
-            # 現在の日時を取得
-            now = datetime.datetime.now()
-            # ファイル名に使用する日時文字列を作成
-            filename = 'rec/' + now.strftime('%Y%m%d_%H%M%S') + '.mp4'
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            fps = int(cap.get(cv2.CAP_PROP_FPS))                    # カメラのFPSを取得
-            width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))              # カメラの横幅を取得
-            height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            cv2.VideoWriter(filename, fourcc, fps, (width, height))
-            recording = True
+        with lock:  # Add this line
+            if not recording: # Start recording if not already recording
+                logging.debug('Starting recording.')  # Log recording start
+                now = datetime.datetime.now()
+                filename = 'rec/' + now.strftime('%Y%m%d_%H%M%S') + '.mp4'
+                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+                fps = int(cap.get(cv2.CAP_PROP_FPS))
+                width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                recorder = cv2.VideoWriter(filename, fourcc, fps, (width, height))
+                recording = True
     elif action == 'stop':
         with lock:  # Add this line
             if recording: # Stop recording if currently recording
